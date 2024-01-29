@@ -1,2 +1,20 @@
 
-<h1>Your lucky number is {{ number }}</h1>
+<h1>Questions</h1>
+<form>
+        <ul>
+                {% for question in questions %}
+                        <li>
+                                <h3>{{ question.questionText }}</h3>
+                                <ol>
+                                        {% for option in question.answerOptions %}
+                                                <li>
+                                                    <input type="checkbox" name="question_{{ question.id }}">
+                                                    <label>{{ option }}</label>
+                                                </li>
+                                        {% endfor %}
+                                </ol>
+
+                        </li>
+                {% endfor %}
+        </ul>
+</form>
