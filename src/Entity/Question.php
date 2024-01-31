@@ -2,10 +2,15 @@
 
 namespace App\Entity;
 
+use App\Model\IndexedAnswerOption;
 use App\Repository\QuestionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+
+/**
+ * @property IndexedAnswerOption[] $answerOptions
+ */
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
 class Question
 {
@@ -17,11 +22,10 @@ class Question
     #[ORM\Column(length: 255)]
     private ?string $questionText = null;
 
-    #[ORM\Column]
-    private ?int $correctAnswerValue = null;
 
-    #[ORM\Column(type: Types::SIMPLE_ARRAY)]
+    #[ORM\Column(type: Types::JSON)]
     private array $answerOptions = [];
+
 
     public function getId(): ?int
     {
@@ -36,27 +40,31 @@ class Question
     public function setQuestionText(string $questionText): static
     {
         $this->questionText = $questionText;
-
         return $this;
     }
 
-    public function getCorrectAnswerValue(): ?int
-    {
-        return $this->correctAnswerValue;
-    }
 
-    public function setCorrectAnswerValue(int $correctAnswerValue): static
-    {
-        $this->correctAnswerValue = $correctAnswerValue;
-
-        return $this;
-    }
-
+    /**
+     * @return IndexedAnswerOption[]
+     */
     public function getAnswerOptions(): array
     {
-        return $this->answerOptions;
+        return array_map(function ($option) {
+            if (!is_array($option)) {
+                return $option;
+            }
+            return new IndexedAnswerOption(
+                $option['key'],
+                $option['text'],
+                $option['isCorrect'],
+            );
+        }, $this->answerOptions);
     }
 
+    /**
+     * @param IndexedAnswerOption[] $answerOptions
+     * @return $this
+     */
     public function setAnswerOptions(array $answerOptions): static
     {
         $this->answerOptions = $answerOptions;

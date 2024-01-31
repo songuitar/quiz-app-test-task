@@ -1,0 +1,42 @@
+<h1>Your result</h1>
+
+<div style="display: flex">
+    <div style="width:50%">
+        <h3>Correct answers</h3>
+        <ul>
+            {% for answer in result.answers %}
+                {% if answer.isCorrect %}
+                <li>
+                    <h3>{{ answer.questionText }}</h3>
+                    <ul>
+                        {% for option in answer.pickedOptions %}
+                            <li> {{ option.text }} {% if option.isCorrect %} (Right answer) {% else %} (Wrong answer) {% endif %}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    <div style="width:50%">
+        <h3>Incorrect answers</h3>
+        <ul>
+            {% for answer in result.answers %}
+                {% if not answer.isCorrect %}
+                    <li>
+                        <h3>{{ answer.questionText }}</h3>
+                        <ul>
+                            {% for option in answer.pickedOptions %}
+                                <li> {{ option.text }} {% if option.isCorrect %} (Right answer) {% else %} (Wrong answer) {% endif %}</li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+
+<a href="http://localhost:8080/">Try again!</a>
+

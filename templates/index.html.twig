@@ -1,6 +1,6 @@
 
 <h1>Questions</h1>
-<form>
+<form method="post" action="http://127.0.0.1:8080/check-results">
         <ul>
                 {% for question in questions %}
                         <li>
@@ -8,8 +8,8 @@
                                 <ol>
                                         {% for option in question.answerOptions %}
                                                 <li>
-                                                    <input type="checkbox" name="question_{{ question.id }}">
-                                                    <label>{{ option }}</label>
+                                                    <input type="checkbox" name="question_{{ question.id }}&answer_{{ option.key }}">
+                                                    <label>{{ option.text }}</label>
                                                 </li>
                                         {% endfor %}
                                 </ol>
@@ -17,4 +17,5 @@
                         </li>
                 {% endfor %}
         </ul>
+    <button type="submit">Check!</button>
 </form>
