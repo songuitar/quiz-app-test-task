@@ -10,7 +10,7 @@ class QuestionMixer
      * @param Question[] $questions
      * @return Question[]
      */
-    public function shake(array $questions)
+    public function shake(array $questions): array
     {
         shuffle($questions);
 

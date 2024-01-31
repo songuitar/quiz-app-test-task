@@ -6,25 +6,20 @@ use App\Entity\Answer;
 use App\Entity\TestResult;
 use App\Model\CheckedAnswer;
 use App\Repository\QuestionRepository;
-use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 class AnswerValidator
 {
-    private readonly ExpressionLanguage $expr;
-
     public function __construct(
-        private readonly QuestionRepository $questionRepository,
-        private readonly QuestionMixer      $questionMixer
+        private readonly QuestionRepository $questionRepository
     )
     {
-        $this->expr = new ExpressionLanguage();
     }
 
     /**
      * @param CheckedAnswer[] $checkedAnswers
      * @return TestResult
      */
-    public function validate(array $checkedAnswers)
+    public function validate(array $checkedAnswers): TestResult
     {
         $checkedAnswers = $this->groupByQuestionKey($checkedAnswers);
         $questions = $this->questionRepository->findBy(['id' => array_keys($checkedAnswers)]);
@@ -67,7 +62,7 @@ class AnswerValidator
      * @param CheckedAnswer[] $checkedAnswers
      * @return array<string[]>
      */
-    private function groupByQuestionKey(array $checkedAnswers)
+    private function groupByQuestionKey(array $checkedAnswers): array
     {
         $groupedAnswers = [];
         foreach ($checkedAnswers as $checkedAnswer) {

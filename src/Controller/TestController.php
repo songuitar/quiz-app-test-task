@@ -24,22 +24,19 @@ final class TestController extends AbstractController
     {
     }
 
-    #[Route('/')]
+    #[Route('/', name: 'index')]
     public function index(): Response
     {
-        $questions = $this->questionMixer->shake(
-            $this->questionRepository->findAll()
-        );
-
         return $this->render('index.html.twig', [
-            'questions' => $questions,
+            'questions' => $this->questionMixer->shake(
+                $this->questionRepository->findAll()
+            ),
         ]);
     }
 
     #[Route('/check-results', methods: ['POST'])]
     public function checkResults(Request $request): Response
     {
-        $a = 0;
         $result = $this->answerValidator->validate(array_map(
             function (string $checkedAnswer) {
                 list($question, $answer) = explode('&', $checkedAnswer);
@@ -57,5 +54,11 @@ final class TestController extends AbstractController
         return $this->render('result.html.twig', [
             'result' => $result
         ]);
+    }
+
+    #[Route('/check-results', methods: ['GET'])]
+    public function backToTest(): Response
+    {
+        return $this->redirectToRoute('index');
     }
 }

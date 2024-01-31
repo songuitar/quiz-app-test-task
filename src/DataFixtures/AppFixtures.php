@@ -3,18 +3,12 @@
 namespace App\DataFixtures;
 
 use App\Entity\Question;
-use App\Model\CheckedAnswer;
 use App\Model\IndexedAnswerOption;
-use App\Service\AnswerValidator;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
 class AppFixtures extends Fixture
 {
-
-    public function __construct(private readonly AnswerValidator $answerValidator)
-    {
-    }
 
     public function load(ObjectManager $manager): void
     {
@@ -32,7 +26,7 @@ class AppFixtures extends Fixture
             ->setQuestionText('Длинна окружности')
             ->setAnswerOptions(
                 [
-                    new IndexedAnswerOption('1', '2 * pi * R', true),
+                    new IndexedAnswerOption('1', '2 * Pi * R', true),
                     new IndexedAnswerOption('2', 'Pi * D', true),
                     new IndexedAnswerOption('3', 'Pi * R^2', false),
                 ]
@@ -50,10 +44,5 @@ class AppFixtures extends Fixture
         );
 
         $manager->flush();
-
-        $this->answerValidator->validate([
-            new CheckedAnswer(['1','2'], '17'),
-            new CheckedAnswer(['1','2'], '18'),
-        ]);
     }
 }
